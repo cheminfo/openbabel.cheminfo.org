@@ -12,7 +12,7 @@ import type {
   ShareParamCodec,
   ShareVocabulary,
 } from 'react-cheminfo/core';
-import { enumParam } from 'react-cheminfo/core';
+import { applyShareConfig, enumParam } from 'react-cheminfo/core';
 
 /** The ways a structure is given to the converter. */
 export const INPUT_MODES = ['text', 'draw', 'file'] as const;
@@ -71,3 +71,21 @@ export type HideKey = (typeof SHARE_VOCABULARY)['parts'][number]['key'];
 export type OpenBabelShareConfig = ShareConfig<
   (typeof SHARE_VOCABULARY)['params']
 >;
+
+/**
+ * The address of a page once a configuration is written into its query. Keys
+ * this site's links do not own are kept, and a parameter at its default is not
+ * written, so an unconfigured page stays a plain path.
+ * @param path - The page, e.g. `/about`.
+ * @param search - The query string on screen, with or without its `?`.
+ * @param config - The configuration to write.
+ * @returns The path, followed by the query when there is one.
+ */
+export function shareAddress(
+  path: string,
+  search: string,
+  config: OpenBabelShareConfig,
+): string {
+  const query = applyShareConfig(search, config, SHARE_VOCABULARY);
+  return query === '' ? path : `${path}?${query}`;
+}

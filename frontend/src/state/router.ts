@@ -16,16 +16,12 @@
  */
 
 import { effect } from '@preact/signals-react';
-import {
-  applyShareConfig,
-  createTabRouter,
-  startDocumentMeta,
-} from 'react-cheminfo/core';
+import { createTabRouter, startDocumentMeta } from 'react-cheminfo/core';
 
 import type { TabId } from '../routes.ts';
 import { ROUTES, SITE_ID, SITE_URL } from '../routes.ts';
 
-import { SHARE_VOCABULARY } from './shareConfig.ts';
+import { shareAddress } from './shareConfig.ts';
 import { view } from './view.ts';
 
 /** The one place that knows how this site's addresses are written. */
@@ -51,17 +47,12 @@ export function currentPath(): string {
  * @param tab - The page to open.
  */
 export function navigate(tab: TabId): void {
-  const path = router.format({ tab });
-  const query = applyShareConfig(
+  const address = shareAddress(
+    router.format({ tab }),
     globalThis.location.search,
     view.share.value,
-    SHARE_VOCABULARY,
   );
-  globalThis.history.pushState(
-    null,
-    '',
-    query === '' ? path : `${path}?${query}`,
-  );
+  globalThis.history.pushState(null, '', address);
   view.tab.value = tab;
 }
 

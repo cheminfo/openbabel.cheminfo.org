@@ -3,8 +3,8 @@
  * whether a conversion is running, and the configuration the link they opened
  * carries.
  *
- * Session-only. Nothing here is persisted, and nothing here knows how an
- * address is written — `router.ts` owns that, and reads these signals.
+ * Session-only: nothing here is persisted. Which page an address names is
+ * `router.ts`'s business; the input mode is written back into the address.
  */
 
 import { signal } from '@preact/signals-react';
@@ -16,7 +16,7 @@ import {
 import type { TabId } from '../routes.ts';
 
 import type { InputMode, OpenBabelShareConfig } from './shareConfig.ts';
-import { SHARE_VOCABULARY } from './shareConfig.ts';
+import { SHARE_VOCABULARY, shareAddress } from './shareConfig.ts';
 
 const share = signal<OpenBabelShareConfig>(readShareConfig());
 
@@ -38,7 +38,8 @@ export const view = {
 
 /**
  * Switch between typing, drawing and dropping the input. The choice travels in
- * the address, so a link hands someone the converter already on the right tab.
+ * the address, rewritten in place, so a link hands someone the converter
+ * already on the right tab.
  * @param mode - Input mode to activate.
  */
 export function setInputMode(mode: InputMode): void {
@@ -47,6 +48,12 @@ export function setInputMode(mode: InputMode): void {
     ...view.share.value,
     params: { ...view.share.value.params, input: mode },
   };
+  const { pathname, search, hash } = globalThis.location;
+  globalThis.history.replaceState(
+    globalThis.history.state,
+    '',
+    `${shareAddress(pathname, search, view.share.value)}${hash}`,
+  );
 }
 
 /**

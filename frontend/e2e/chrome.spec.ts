@@ -67,3 +67,19 @@ test('a link opens the converter on the input mode it names', async ({
     page.getByText('Drop a file here, or click to browse'),
   ).toBeVisible();
 });
+
+test('the input mode a visitor picks travels in the address', async ({
+  page,
+}) => {
+  const drawTab = page.getByRole('tab', { name: 'Draw a molecule' });
+  await page.goto('/');
+
+  await drawTab.click();
+  await expect(page).toHaveURL(/\/\?input=draw$/);
+
+  await page.reload();
+  await expect(drawTab).toHaveAttribute('aria-selected', 'true');
+
+  await page.getByRole('tab', { name: 'Text input' }).click();
+  await expect(page).not.toHaveURL(/input=/);
+});
