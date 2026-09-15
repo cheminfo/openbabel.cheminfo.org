@@ -3,7 +3,7 @@ import { useSignals } from '@preact/signals-react/runtime';
 import { useState } from 'react';
 
 import { data, loadInputFile, setInput } from '../../../state/data.ts';
-import type { InputMode } from '../../../state/view.ts';
+import type { InputMode } from '../../../state/shareConfig.ts';
 import { setInputMode, view } from '../../../state/view.ts';
 
 import DrawPanel from './DrawPanel.tsx';

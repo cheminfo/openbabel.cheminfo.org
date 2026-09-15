@@ -5,7 +5,10 @@ import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
 const aspirin = readFileSync(
-  join(import.meta.dirname, '../../src/v1/__tests__/data/aspirin.cdxml'),
+  join(
+    import.meta.dirname,
+    '../../backend/src/v1/__tests__/data/aspirin.cdxml',
+  ),
 ).toString();
 
 async function dropAspirin(page: Page, target: string) {
@@ -20,7 +23,7 @@ async function dropAspirin(page: Page, target: string) {
 }
 
 test('converts a dropped aspirin.cdxml file to molfile', async ({ page }) => {
-  await page.goto('/#file');
+  await page.goto('/?input=file');
 
   await expect(
     page.getByText('Drop a file here, or click to browse'),

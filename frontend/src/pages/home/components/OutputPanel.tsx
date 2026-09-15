@@ -1,6 +1,8 @@
 import { Button, ButtonGroup, Card, H5, TextArea } from '@blueprintjs/core';
 import { useSignals } from '@preact/signals-react/runtime';
 import { useState } from 'react';
+import { downloadText, sanitizeFileName } from 'react-cheminfo/core';
+import { useIsHidden } from 'react-cheminfo/ui';
 
 import { formatExtension } from '../../../api/openbabel.ts';
 import { data } from '../../../state/data.ts';
@@ -18,34 +20,29 @@ export default function OutputPanel() {
   useSignals();
   const [isExpanded, setIsExpanded] = useState(false);
   const [mode, setMode] = useState<'text' | 'preview'>('text');
+  const isHidden = useIsHidden();
   const output = data.output.value;
   const outputFormat = preferences.outputFormat.value;
+  // A link that switches the preview off must not mount the 3D canvas at all,
+  // so the capability itself is withdrawn rather than only the panel.
   const canPreview =
-    Boolean(output) && getPreviewCapability(outputFormat) !== null;
+    !isHidden('preview') &&
+    Boolean(output) &&
+    getPreviewCapability(outputFormat) !== null;
   const showPreview = mode === 'preview' && canPreview;
 
   function handleDownload() {
-    const blob = new Blob([output], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = `structure.${formatExtension(preferences.outputFormat.value)}`;
-    anchor.click();
-    URL.revokeObjectURL(url);
+    downloadText(
+      output,
+      sanitizeFileName(`structure.${formatExtension(outputFormat)}`),
+    );
   }
 
   return (
     <Card style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 8,
-        }}
-      >
+      <div className="output-header">
         <H5 style={{ margin: 0 }}>Output</H5>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <div className="output-header-actions">
           <ButtonGroup>
             <Button
               active={mode === 'text'}

@@ -36,7 +36,6 @@ export default function Molstar3D(props: Molstar3DProps) {
     async function render() {
       let plugin = pluginRef.current;
       if (!plugin) {
-        // eslint-disable-next-line new-cap -- DefaultPluginSpec is a mol* factory function, not a constructor
         plugin = new PluginContext(DefaultPluginSpec());
         await plugin.init();
         if (cancelled || !canvasRef.current || !containerRef.current) {

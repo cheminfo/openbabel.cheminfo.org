@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { PagePart } from 'react-cheminfo/ui';
 
 import { loadFormats } from '../../state/data.ts';
 
@@ -9,8 +10,10 @@ import OptionsPanel from './components/OptionsPanel.tsx';
 import OutputPanel from './components/OutputPanel.tsx';
 
 /**
- * Chemical file format converter page.
- * @returns The converter page component.
+ * The converter: the structure going in, the options applied to it, and what
+ * comes out. Each column beside the input is a part a shared link may switch
+ * off, so a course page can frame the converter alone.
+ * @returns The converter page.
  */
 export default function HomePage() {
   useEffect(() => {
@@ -18,21 +21,21 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-        gap: 16,
-      }}
-    >
+    <div className="converter-grid">
       <InputPanel />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <OptionsPanel />
-        <HelpPanel />
+      <div className="converter-column">
+        <PagePart part="options">
+          <OptionsPanel />
+        </PagePart>
+        <PagePart part="help">
+          <HelpPanel />
+        </PagePart>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div className="converter-column">
         <OutputPanel />
-        <LogPanel />
+        <PagePart part="log">
+          <LogPanel />
+        </PagePart>
       </div>
     </div>
   );

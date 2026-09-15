@@ -1,3 +1,9 @@
+/* The family's chrome: the neutrals, the geometry, the type and the header
+   layout. The two colours this site owns come from <SiteTheme siteId>, which
+   reads them from its ECOSYSTEM_SITES record — nothing here declares a colour
+   of its own. */
+@import 'react-cheminfo/styles/chrome.css';
+
 *,
 *::before,
 *::after {
@@ -7,6 +13,72 @@
 *:focus,
 *:focus-visible {
   outline: none !important;
+}
+
+/* The page under the header, and the columns the converter is laid out in. */
+/* The header and the page fill the viewport; the footer lies below the fold. */
+.app-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.app-main {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 24px;
+}
+
+.app-main--embedded {
+  padding: 8px;
+}
+
+/* A phone has no width to spare on stacked margins: the page and each card
+   keep just enough to set a card's edge off the screen's. */
+@media (max-width: 700px) {
+  .app-main {
+    padding: 8px 6px;
+  }
+
+  .app-main .bp6-card {
+    padding: 10px;
+  }
+}
+
+/* The controls wrap under the title rather than past the card's edge. */
+.output-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.output-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-footer-note {
+  margin: 0;
+}
+
+.converter-grid {
+  display: grid;
+  /* min(), so a phone narrower than one column still gets one that fits. */
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: 16px;
+}
+
+.converter-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 /* Let the input card's tab panel grow so the textarea/editor fills the card. */
@@ -53,7 +125,7 @@
   position: relative;
   flex: 1;
   min-height: 380px;
-  border: 1px solid #d3d8de;
+  border: 1px solid var(--border);
   border-radius: 6px;
   overflow: hidden;
 }
@@ -71,17 +143,21 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  border: 2px dashed #c5cbd3;
+  border: 2px dashed var(--border);
   border-radius: 4px;
-  background: #f6f7f9;
+  background: var(--surface-sunken);
   cursor: pointer;
   text-align: center;
   padding: 16px;
 }
 
+.file-drop-icon {
+  color: var(--text-muted);
+}
+
 .file-drop-zone.drag-over {
-  border-color: #2d72d2;
-  background: #e8f2ff;
+  border-color: var(--accent);
+  background: var(--surface-accent);
 }
 
 .output-preview {
@@ -98,14 +174,14 @@
   justify-content: center;
   min-height: 0;
   overflow: auto;
-  border: 1px solid #d3d8de;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #fff;
+  background: var(--surface);
   padding: 8px;
 }
 
 .output-preview-empty {
-  color: #5f6b7c;
+  color: var(--text-muted);
   text-align: center;
 }
 

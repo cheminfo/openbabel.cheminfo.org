@@ -49,11 +49,11 @@ export default function FilePanel() {
           event.target.value = '';
         }}
       />
-      <Icon icon="cloud-upload" size={40} color="#5f6b7c" />
+      <Icon icon="cloud-upload" size={40} className="file-drop-icon" />
       <p style={{ margin: 0, fontSize: 16 }}>
         Drop a file here, or click to browse
       </p>
-      <p style={{ margin: 0, color: '#5f6b7c' }}>
+      <p style={{ margin: 0, color: 'var(--text-muted)' }}>
         e.g. .cdxml, .mol, .pdb — the input format is selected from the file
         extension
       </p>

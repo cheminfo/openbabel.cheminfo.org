@@ -1,54 +1,46 @@
 {
   "name": "openbabel",
   "version": "1.2.0",
-  "description": "openbabel docker web service",
+  "description": "Convert a structure between chemical file formats, with OpenBabel",
   "private": true,
   "type": "module",
-  "homepage": "https://github.com/cheminfo/openbabel#readme",
+  "homepage": "https://github.com/cheminfo/openbabel.cheminfo.org#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cheminfo/openbabel.git"
+    "url": "git+https://github.com/cheminfo/openbabel.cheminfo.org.git"
   },
   "bugs": {
-    "url": "https://github.com/cheminfo/openbabel/issues"
+    "url": "https://github.com/cheminfo/openbabel.cheminfo.org/issues"
   },
   "license": "MIT",
   "author": "Luc Patiny",
   "workspaces": [
+    "backend",
     "frontend"
   ],
   "scripts": {
-    "build": "npm run build --workspace=frontend",
-    "check-types": "npm run check-types --workspace=frontend",
-    "dev": "node --watch --env-file-if-exists=.env src/index.js",
-    "dev-frontend": "npm run dev --workspace=frontend",
+    "build": "npm run build -w frontend",
+    "check-tokens": "node node_modules/react-cheminfo/bin/check-tokens.mjs backend/src frontend/src",
+    "check-types": "npm run check-types -w backend && npm run check-types -w frontend",
+    "dev": "lsof -ti:20808,20809 | xargs kill -9 2>/dev/null; concurrently --kill-others --kill-others-on-fail \"npm run dev -w backend\" \"npm run dev -w frontend\"",
     "eslint": "eslint .",
     "eslint-fix": "eslint . --fix",
     "prettier": "prettier --check .",
     "prettier-write": "prettier --write .",
-    "start": "node --env-file-if-exists=.env src/index.js",
-    "test": "npm run test-only && npm run check-types && npm run eslint && npm run prettier",
-    "test-e2e": "npm run test-e2e --workspace=frontend",
-    "test-only": "vitest run --coverage"
-  },
-  "dependencies": {
-    "@fastify/cors": "^11.3.0",
-    "@fastify/multipart": "^10.1.0",
-    "@fastify/sensible": "^6.0.4",
-    "@fastify/static": "9.1.0",
-    "@fastify/swagger": "^9.8.0",
-    "@fastify/swagger-ui": "^5.2.5",
-    "fastify": "^5.10.0"
+    "start": "npm run start -w backend",
+    "test": "npm run test-only && npm run check-types && npm run check-tokens && npm run eslint && npm run prettier",
+    "test-e2e": "npm run test-e2e -w frontend",
+    "test-only": "npm run test-only -w backend && npm run test-only -w frontend"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.1.10",
-    "eslint": "^9.39.4",
-    "eslint-config-zakodium": "^20.0.0",
-    "prettier": "^3.9.4",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "concurrently": "^10.0.5",
+    "eslint": "^9",
+    "eslint-config-zakodium": "^20.1.0",
+    "prettier": "^3.9.6",
+    "typescript": "^6"
   },
   "overrides": {
-    "@fastify/static": "9.1.0"
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   }
 }

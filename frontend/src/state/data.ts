@@ -14,15 +14,23 @@ export const data = {
   log: signal(''),
 };
 
+let formatsRequest: Promise<void> | null = null;
+
 /**
- * Load the list of supported formats from the API.
+ * Load the list of supported formats from the API, once. Callers that need the
+ * list before they can act await the same request rather than starting another.
  */
 export async function loadFormats(): Promise<void> {
-  try {
-    data.formats.value = await fetchFormats();
-  } catch (error) {
-    data.log.value = String(error);
-  }
+  formatsRequest ??= (async () => {
+    try {
+      data.formats.value = await fetchFormats();
+    } catch (error) {
+      data.log.value = String(error);
+      // A failed load is not an answer, so let a later caller ask again.
+      formatsRequest = null;
+    }
+  })();
+  return formatsRequest;
 }
 
 /**
@@ -52,6 +60,9 @@ export function setInputFromMolfile(molfile: string): void {
 export async function loadInputFile(file: File): Promise<void> {
   data.input.value = await file.text();
   data.inputFileName.value = file.name;
+  // The format list is what an extension is matched against, so a file dropped
+  // before it arrived waits for it rather than silently keeping the default.
+  await loadFormats();
   const extension = file.name.split('.').pop()?.toLowerCase();
   const format = data.formats.value?.input.find(
     (candidate) => candidate.name === extension,
