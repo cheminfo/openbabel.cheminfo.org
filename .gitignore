@@ -16,3 +16,6 @@ npm-debug.log*
 # Playwright
 playwright-report
 test-results
+
+# Deploy state kept by the server's global deploy script
+.deploy
