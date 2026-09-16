@@ -1,5 +1,5 @@
 # ── Stage 1: build the frontend ──────────────────────────────────────────────
-FROM node:24-bookworm-slim AS frontend-builder
+FROM node:24-trixie-slim AS frontend-builder
 
 WORKDIR /app
 
@@ -14,9 +14,17 @@ COPY frontend ./frontend
 RUN npm run build --workspace=frontend
 
 # ── Stage 2: production image ─────────────────────────────────────────────────
-FROM node:24-bookworm-slim
+FROM node:24-trixie-slim
 
-RUN apt-get update \
+# Open Babel 3.2 is the first release that reads ChemDraw's current CDXML with
+# its bond orders intact; under 3.1.1 — what trixie itself ships — aspirin comes
+# back as a radical with no aromatic ring. Only openbabel and its library are
+# taken from sid; the pin keeps every other package on trixie.
+RUN echo 'deb http://deb.debian.org/debian sid main' \
+    > /etc/apt/sources.list.d/sid.list \
+  && printf 'Package: *\nPin: release a=sid\nPin-Priority: 100\n\nPackage: openbabel libopenbabel*\nPin: release a=sid\nPin-Priority: 990\n' \
+    > /etc/apt/preferences.d/openbabel-sid \
+  && apt-get update \
   && apt-get install -y --no-install-recommends openbabel \
   && rm -rf /var/lib/apt/lists/*
 

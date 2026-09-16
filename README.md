@@ -26,6 +26,12 @@ project's creation date, and `PORT` moves the pair together.
 `obabel` must be on the machine. It is found at `/opt/homebrew/bin/obabel` or
 `/usr/bin/obabel`; `BABEL` names it anywhere else.
 
+**Open Babel 3.2 or newer.** It is the first release that reads ChemDraw's
+current CDXML with its bond orders intact — 3.1.1 turns aspirin into a radical
+with no aromatic ring. The image installs it from Debian sid, since trixie and
+Ubuntu still ship 3.1.1. On an older binary the CDXML test skips rather than
+pin the wrong answer.
+
 ```bash
 npm test        # unit tests, type-check, colour tokens, eslint, prettier
 npm run test-e2e  # Playwright; run `npx playwright install chromium` in frontend/ once
