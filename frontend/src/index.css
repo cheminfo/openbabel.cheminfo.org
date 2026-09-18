@@ -121,20 +121,6 @@
   resize: none;
 }
 
-.draw-editor-wrapper {
-  position: relative;
-  flex: 1;
-  min-height: 380px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.draw-editor-canvas {
-  position: absolute;
-  inset: 0;
-}
-
 .file-drop-zone {
   flex: 1;
   min-height: 380px;

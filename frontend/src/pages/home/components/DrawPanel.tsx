@@ -1,6 +1,6 @@
 import { Molecule } from 'openchemlib';
 import { useState } from 'react';
-import { CanvasMoleculeEditor } from 'react-ocl';
+import { StructureEditor } from 'react-cheminfo/structure';
 
 import { data, setInputFromMolfile } from '../../../state/data.ts';
 import { preferences } from '../../../state/preferences.ts';
@@ -12,21 +12,16 @@ import { preferences } from '../../../state/preferences.ts';
  */
 export default function DrawPanel() {
   const [initial] = useState(readInitialStructure);
-  // The canvas editor sizes itself in pixels to fill its container. Absolute
-  // positioning keeps that pixel size out of the card's height computation,
-  // otherwise the card and the canvas grow each other indefinitely.
+  // Undebounced, so a Convert clicked right after a stroke sees that stroke.
   return (
-    <div className="draw-editor-wrapper">
-      <div className="draw-editor-canvas">
-        <CanvasMoleculeEditor
-          width="100%"
-          height="100%"
-          inputValue={initial.value}
-          inputFormat={initial.format}
-          onChange={(event) => setInputFromMolfile(event.getMolfile())}
-        />
-      </div>
-    </div>
+    <StructureEditor
+      style={{ flex: 1 }}
+      minHeight={380}
+      debounce={0}
+      value={initial.value}
+      inputFormat={initial.format}
+      onChange={(change) => setInputFromMolfile(change.molfile)}
+    />
   );
 }
 
