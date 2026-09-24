@@ -64,6 +64,12 @@
   gap: 8px;
 }
 
+/* The log keeps a height of its own while it is empty, so the column does not
+   jump on the first conversion. */
+.log-block pre {
+  min-height: 60px;
+}
+
 .app-footer-note {
   margin: 0;
 }

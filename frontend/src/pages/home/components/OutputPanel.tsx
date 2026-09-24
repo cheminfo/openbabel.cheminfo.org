@@ -2,7 +2,7 @@ import { Button, ButtonGroup, Card, H5, TextArea } from '@blueprintjs/core';
 import { useSignals } from '@preact/signals-react/runtime';
 import { useState } from 'react';
 import { downloadText, sanitizeFileName } from 'react-cheminfo/core';
-import { useIsHidden } from 'react-cheminfo/ui';
+import { CopyButton, useIsHidden } from 'react-cheminfo/ui';
 
 import { formatExtension } from '../../../api/openbabel.ts';
 import { data } from '../../../state/data.ts';
@@ -56,6 +56,12 @@ export default function OutputPanel() {
               onClick={() => setMode('preview')}
             />
           </ButtonGroup>
+          <CopyButton
+            content={output}
+            label="Copy"
+            title="Copy the output"
+            disabled={!output}
+          />
           <Button
             icon="maximize"
             text="Expand"

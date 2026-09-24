@@ -70,7 +70,9 @@ export default function Molstar3D(props: Molstar3DProps) {
     <div className="molstar-container" ref={containerRef}>
       <canvas className="molstar-canvas" ref={canvasRef} />
       {(webglError ?? error) && (
-        <div className="molstar-error">{webglError ?? error}</div>
+        <div className="molstar-error text-selectable">
+          {webglError ?? error}
+        </div>
       )}
     </div>
   );
