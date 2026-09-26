@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.3.0](https://github.com/cheminfo/openbabel.cheminfo.org/compare/v1.2.0...v1.3.0) (2026-09-26)
+
+
+### Features
+
+* add web frontend with 2D/3D/SVG structure preview ([23c9057](https://github.com/cheminfo/openbabel.cheminfo.org/commit/23c9057d8d79a0cb7fcf816d16703367fe652442))
+* align project with current standards ([1165f5a](https://github.com/cheminfo/openbabel.cheminfo.org/commit/1165f5a237b95550e4dfc7388f81114f848e44cd))
+* copy values with a click and keep the tool text unselectable ([5d8633e](https://github.com/cheminfo/openbabel.cheminfo.org/commit/5d8633e8e706a61366b9d83a986befe841f045cf))
+* draw structures with react-cheminfo's StructureEditor ([c0d6142](https://github.com/cheminfo/openbabel.cheminfo.org/commit/c0d6142089a8521db347831aaae6f4c2ab3bec86))
+* limit parallel conversions and kill long-running ones ([133b567](https://github.com/cheminfo/openbabel.cheminfo.org/commit/133b567ab32f7a95f325f4e43c3956c2023623c7))
+* split into a TypeScript backend and a react-cheminfo frontend ([491f092](https://github.com/cheminfo/openbabel.cheminfo.org/commit/491f092d1d5e002c15374a465e7d3a56271f0561))
+
+
+### Bug Fixes
+
+* **compose:** drop ulimits.nproc/nofile, use pids_limit instead ([5f29817](https://github.com/cheminfo/openbabel.cheminfo.org/commit/5f29817cd2e4cc14c4905b2b34dbc85a28c6784e))
+* **compose:** traefik default host is openbabel.cheminfo.org ([b56eef2](https://github.com/cheminfo/openbabel.cheminfo.org/commit/b56eef28d75e191d114be53f869733a780733607))
+* keep the input mode in the address ([9fa5743](https://github.com/cheminfo/openbabel.cheminfo.org/commit/9fa57439e2695961a656c27815d51398a6b672e0))
+* read ChemDraw CDXML with Open Babel 3.2 ([e26cf37](https://github.com/cheminfo/openbabel.cheminfo.org/commit/e26cf370944cd01c333211a7473f9d2ffcfc273d))
+
 ## [1.2.0](https://github.com/cheminfo/openbabel/compare/v1.1.0...v1.2.0) (2026-04-20)
 
 
