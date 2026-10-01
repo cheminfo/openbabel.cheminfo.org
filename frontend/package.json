@@ -8,6 +8,7 @@
     "build": "vite build",
     "check-types": "tsc --noEmit",
     "dev": "vite",
+    "og-image": "node scripts/generateOgImage.ts",
     "preview": "vite preview --host 0.0.0.0",
     "test-e2e": "playwright test",
     "test-e2e-ui": "playwright test --ui",
@@ -21,7 +22,7 @@
     "molstar": "^5.11.0",
     "openchemlib": "^9.25.0",
     "react": "^19.2.8",
-    "react-cheminfo": "^0.34.0",
+    "react-cheminfo": "^0.36.0",
     "react-dom": "^19.2.8",
     "react-ocl": "^8.7.2",
     "react-science": "^23.0.1"
