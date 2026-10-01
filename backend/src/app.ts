@@ -9,11 +9,13 @@ import swaggerUi from '@fastify/swagger-ui';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import Fastify from 'fastify';
+import type { RouteMeta } from 'react-cheminfo/core';
 import {
   PAGE_BODY_MARKER,
   fill,
   injectPageMeta,
   noscriptIndex,
+  pageMetaFor,
   robotsTxt,
   sitemapXml,
   structuredDataScript,
@@ -110,32 +112,51 @@ function registerFrontend(
   root: string,
   options: { trackingScript?: string; siteUrl?: string },
 ): void {
-  // The built page is a template: the crawl path is the same on every address,
-  // so it is written once here, and the head is written per request below.
-  const index = fill(
-    injectTrackingScript(
-      readFileSync(join(root, 'index.html'), 'utf8'),
-      options.trackingScript,
-    ),
-    PAGE_BODY_MARKER,
-    noscriptIndex({
-      site: SITE,
-      routes: NOSCRIPT_ROUTES,
-      heading: 'openbabel.cheminfo.org — chemical file format converter',
-      intro:
-        'Convert a structure between any pair of the formats OpenBabel reads and writes. The converter itself needs JavaScript; the conversion API does not.',
-      hrefs: 'relative',
-      ecosystem: { taglines: false },
-    }),
+  // The built page is a template: the head and the crawl path are both written
+  // per address below. The crawl path used to be written once here, which made
+  // every address ship the same body and left a search engine with only the
+  // title to tell the pages of the site apart.
+  const template = injectTrackingScript(
+    readFileSync(join(root, 'index.html'), 'utf8'),
+    options.trackingScript,
   );
 
   const routes = readRoutes(root);
+
+  // One page per address, built the first time it is asked for: the body is the
+  // same for every visitor, so it is worth keeping rather than rebuilding.
+  const pages = new Map<string, string>();
+  const pageFor = (meta: RouteMeta): string => {
+    const built = pages.get(meta.path);
+    if (built !== undefined) return built;
+    const page = fill(
+      template,
+      PAGE_BODY_MARKER,
+      noscriptIndex({
+        // What the address being served says for itself, above the menu every
+        // address carries.
+        content: { heading: meta.title, paragraphs: [meta.description] },
+        site: SITE,
+        routes: NOSCRIPT_ROUTES,
+        heading: 'openbabel.cheminfo.org — chemical file format converter',
+        intro:
+          'Convert a structure between any pair of the formats OpenBabel reads and writes. The converter itself needs JavaScript; the conversion API does not.',
+        hrefs: 'relative',
+        ecosystem: { taglines: false },
+      }),
+    );
+    pages.set(meta.path, page);
+    return page;
+  };
   const originOf = (request: FastifyRequest) =>
     options.siteUrl ?? `${request.protocol}://${request.host}`;
 
   const sendIndex = (request: FastifyRequest, reply: FastifyReply) => {
     const served = { site: SITE, routes, origin: originOf(request) };
-    const page = injectPageMeta(index, { ...served, url: request.url });
+    const page = injectPageMeta(pageFor(pageMetaFor(routes, request.url)), {
+      ...served,
+      url: request.url,
+    });
     return reply
       .type('text/html; charset=utf-8')
       .send(
