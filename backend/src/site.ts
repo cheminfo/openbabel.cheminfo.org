@@ -25,9 +25,9 @@ const CONVERTER: RouteMeta = {
 
 const ABOUT: RouteMeta = {
   path: '/about',
-  title: 'About — what converts the structures, and under what licence',
+  title: 'About — what converts the structures',
   description:
-    'What openbabel.cheminfo.org converts your structures with, the borrowed work it stands on, its licence, and where to report a problem.',
+    'What openbabel.cheminfo.org converts your structures with, the borrowed work it stands on, and the papers to cite when it helped.',
 };
 
 /** The pages the server describes on its own, with no build beside it. */
@@ -46,7 +46,7 @@ export const NOSCRIPT_ROUTES: readonly NoscriptRoute[] = [
   {
     ...ABOUT,
     short: 'About',
-    note: 'what it is built on, and its licence',
+    note: 'what it is built on, and how to cite it',
   },
   {
     path: '/docs',

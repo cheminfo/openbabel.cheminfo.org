@@ -3,7 +3,7 @@
  *
  * ```
  * /            the converter
- * /about       what it is built on, and its licence
+ * /about       what it is built on, and how to cite it
  * ```
  *
  * A `#` never reaches the server and is dropped by half the tools that pass

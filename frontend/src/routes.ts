@@ -47,9 +47,9 @@ const ROUTE_TABLE = [
     path: '/about',
     tab: 'about',
     label: 'About',
-    title: 'About — what converts the structures, and under what licence',
+    title: 'About — what converts the structures',
     description:
-      'What openbabel.cheminfo.org converts your structures with, the borrowed work it stands on, its licence, and where to report a problem.',
+      'What openbabel.cheminfo.org converts your structures with, the borrowed work it stands on, and the papers to cite when it helped.',
   },
 ] as const satisfies readonly RouteDefinition[];
 
