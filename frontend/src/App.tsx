@@ -30,13 +30,7 @@ import { ABOUT } from './about.ts';
 import { About } from './pages/About.tsx';
 import HomePage from './pages/home/HomePage.tsx';
 import type { TabId } from './routes.ts';
-import {
-  REPOSITORY,
-  ROUTES,
-  SITE_ID,
-  SITE_NAME,
-  routeForTab,
-} from './routes.ts';
+import { ROUTES, SITE_ID, SITE_NAME, routeForTab } from './routes.ts';
 import {
   SHARE_VOCABULARY,
   navigate,
@@ -131,11 +125,7 @@ export default function App(): ReactElement {
         heading="The rest of the cheminfo family"
       >
         <p className="app-footer-note">
-          Open source, MIT licensed —{' '}
-          <a href={REPOSITORY} target="_blank" rel="noreferrer noopener">
-            the sources of this site
-          </a>
-          . The conversion itself is{' '}
+          The conversion itself is{' '}
           <a
             href="https://openbabel.org/"
             target="_blank"

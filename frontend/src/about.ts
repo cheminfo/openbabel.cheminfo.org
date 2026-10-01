@@ -11,7 +11,7 @@
 import type { AboutContent, CitedWork } from 'react-cheminfo/core';
 import { PLATFORM_WORK } from 'react-cheminfo/core';
 
-import { REPOSITORY, SITE_ID } from './routes.ts';
+import { SITE_ID } from './routes.ts';
 
 /**
  * The work a reader publishing a structure converted here owes: Open Babel,
@@ -70,5 +70,4 @@ export const ABOUT: AboutContent = {
     'vite',
   ],
   cite: [PLATFORM_WORK, ...CITED_WORKS],
-  repository: REPOSITORY,
 };
