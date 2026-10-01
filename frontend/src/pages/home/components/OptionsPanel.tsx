@@ -3,10 +3,10 @@ import {
   Card,
   FormGroup,
   H5,
-  InputGroup,
   SegmentedControl,
 } from '@blueprintjs/core';
 import { useSignals } from '@preact/signals-react/runtime';
+import { NumberInput } from 'react-cheminfo/ui';
 
 import { data, runConversion } from '../../../state/data.ts';
 import type { Coordinates, Hydrogens } from '../../../state/preferences.ts';
@@ -78,13 +78,20 @@ export default function OptionsPanel() {
         label="pH to add hydrogens"
         helperText="pH at which the molecule should be protonated, leave empty for no change"
       >
-        <InputGroup
+        <NumberInput
+          allowEmpty
           fill
-          type="number"
-          step="0.1"
-          value={preferences.ph.value}
-          onValueChange={(value) => {
-            preferences.ph.value = value;
+          step={0.1}
+          min={0}
+          max={14}
+          value={
+            preferences.ph.value === ''
+              ? undefined
+              : Number(preferences.ph.value)
+          }
+          ariaLabel="pH to add hydrogens at"
+          onChange={(value) => {
+            preferences.ph.value = value === undefined ? '' : String(value);
           }}
         />
       </FormGroup>
